@@ -36,7 +36,6 @@ class SchemaDriftError(RuntimeError):
 
 
 def read_chunks(table: SourceTable) -> Iterator[pd.DataFrame]:
-    """Yield the source CSV as string-typed chunks, with empty values as NULL."""
     return pd.read_csv(
         table.path,
         dtype=str,
@@ -85,7 +84,6 @@ def copy_chunk(
 
 
 def load_table(conn: PgConnection, table: SourceTable) -> int:
-    """Truncate and reload a single table atomically. Returns the number of rows loaded."""
     if not table.path.exists():
         raise FileNotFoundError(f"Source file not found: {table.path}")
     validate_header(table)

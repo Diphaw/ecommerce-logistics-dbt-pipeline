@@ -1,4 +1,3 @@
--- Calendar spanning the full order history, including estimated delivery dates.
 with bounds as (
 
     select

@@ -1,4 +1,3 @@
--- Grain: one row per order. Central fact for delivery and logistics analysis.
 with orders as (
 
     select * from {{ ref('stg_olist__orders') }}

@@ -1,4 +1,3 @@
--- Grain: one row per order item.
 with items as (
 
     select * from {{ ref('stg_olist__order_items') }}

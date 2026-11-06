@@ -16,8 +16,6 @@ CHUNK_SIZE = 100_000
 
 @dataclass(frozen=True)
 class DbConfig:
-    """PostgreSQL connection settings, sourced from environment variables."""
-
     user: str
     password: str
     host: str
@@ -41,8 +39,6 @@ class DbConfig:
 
 @dataclass(frozen=True)
 class SourceTable:
-    """Contract between a source CSV file and its landing table in the raw schema."""
-
     name: str
     file_name: str
     columns: tuple[str, ...]

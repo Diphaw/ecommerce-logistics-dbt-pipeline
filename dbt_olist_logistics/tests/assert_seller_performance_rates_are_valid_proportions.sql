@@ -1,4 +1,3 @@
--- Rates are proportions and must stay within [0, 1].
 select
     seller_id,
     late_delivery_rate,

@@ -1,4 +1,3 @@
--- One row per order summarising its items.
 with items as (
 
     select * from {{ ref('stg_olist__order_items') }}

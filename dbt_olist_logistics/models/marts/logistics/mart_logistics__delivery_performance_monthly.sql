@@ -1,4 +1,3 @@
--- Grain: one row per purchase month and customer state.
 with orders as (
 
     select * from {{ ref('fct_orders') }}

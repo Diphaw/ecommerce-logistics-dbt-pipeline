@@ -1,4 +1,3 @@
--- Collapses the many geolocation rows per zip-code prefix into a single centroid.
 with geolocation as (
 
     select * from {{ ref('stg_olist__geolocation') }}

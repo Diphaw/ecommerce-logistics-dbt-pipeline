@@ -1,4 +1,3 @@
--- One row per order summarising all of its payment records.
 with payments as (
 
     select * from {{ ref('stg_olist__order_payments') }}
@@ -7,7 +6,6 @@ with payments as (
 
 primary_payment as (
 
-    -- The payment type that covers the largest share of the order value.
     select
         order_id,
         payment_type as primary_payment_type

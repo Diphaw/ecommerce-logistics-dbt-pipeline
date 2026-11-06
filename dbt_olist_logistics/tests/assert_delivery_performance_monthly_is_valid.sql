@@ -1,4 +1,3 @@
--- Grain check: (purchase_month, customer_state) must be unique, and rates must lie within [0, 1].
 select
     purchase_month,
     customer_state,

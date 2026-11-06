@@ -1,4 +1,3 @@
--- Order items enriched with seller-to-customer distance, a key driver of shipping time and cost.
 with items as (
 
     select * from {{ ref('stg_olist__order_items') }}

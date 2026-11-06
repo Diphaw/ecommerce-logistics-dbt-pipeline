@@ -1,4 +1,3 @@
--- One row per order, keeping only the most recent review (orders can be reviewed more than once).
 with reviews as (
 
     select * from {{ ref('stg_olist__order_reviews') }}

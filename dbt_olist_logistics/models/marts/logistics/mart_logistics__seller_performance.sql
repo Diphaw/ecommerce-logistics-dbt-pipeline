@@ -1,4 +1,3 @@
--- Grain: one row per seller. Seller-level fulfilment quality and commercial KPIs.
 with order_items as (
 
     select * from {{ ref('fct_order_items') }}
