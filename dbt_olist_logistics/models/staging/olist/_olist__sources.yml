@@ -1,0 +1,34 @@
+version: 2
+
+sources:
+  - name: olist
+    description: >
+      Raw Olist Brazilian e-commerce data, loaded as-is (all columns TEXT) by
+      `ingestion/load_raw.py`. No cleaning or typing is applied at this layer.
+    schema: raw
+    tables:
+      - name: customers
+        description: One row per customer per order (`customer_id` is order-scoped).
+        columns:
+          - name: customer_id
+            data_tests: [not_null]
+      - name: orders
+        description: One row per order, with lifecycle timestamps.
+        columns:
+          - name: order_id
+            data_tests: [not_null]
+      - name: order_items
+        description: One row per item within an order.
+      - name: order_payments
+        description: One row per payment instalment/method used on an order.
+      - name: order_reviews
+        description: Customer satisfaction reviews.
+      - name: products
+        description: Product catalogue (column names carry upstream typos, e.g. `lenght`).
+      - name: sellers
+        description: Marketplace sellers.
+      - name: geolocation
+        description: Zip-code-prefix to coordinates; many rows per prefix.
+      - name: product_category_translation
+        description: Portuguese to English product category names.
+
