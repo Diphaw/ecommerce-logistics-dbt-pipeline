@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: mart_logistics__seller_performance
+    description: >
+      Seller-level fulfilment KPIs. Rates are computed over orders that have the relevant
+      data (e.g. `late_delivery_rate` only counts orders with a delivery date).
+    columns:
+      - name: seller_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+      - name: late_delivery_rate
+        description: Share of delivered orders that arrived after the estimated date.
+      - name: cancellation_rate
+        description: Share of orders in `canceled` status.
+
+  - name: mart_logistics__delivery_performance_monthly
+    description: Delivery KPIs by purchase month and customer state, ready for BI dashboards.
+    columns:
+      - name: purchase_month
+        data_tests: [not_null]
+      - name: customer_state
+        data_tests: [not_null]
+      - name: on_time_delivery_rate
+        description: Share of delivered orders that arrived on or before the estimated date.

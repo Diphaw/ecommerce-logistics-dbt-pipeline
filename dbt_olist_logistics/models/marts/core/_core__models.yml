@@ -1,0 +1,105 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: Customer dimension (order-scoped `customer_id`) with state and geolocation centroid.
+    columns:
+      - name: customer_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+      - name: customer_unique_id
+        description: Identifies the same person across orders.
+        data_tests: [not_null]
+
+  - name: dim_sellers
+    description: Seller dimension with state and geolocation centroid.
+    columns:
+      - name: seller_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+
+  - name: dim_products
+    description: Product dimension with English category names and derived volume.
+    columns:
+      - name: product_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+      - name: category_name_english
+        data_tests: [not_null]
+
+  - name: dim_date
+    description: Calendar dimension spanning the full order history.
+    columns:
+      - name: date_day
+        description: Primary key.
+        data_tests: [unique, not_null]
+
+  - name: fct_orders
+    description: >
+      One row per order, combining item, payment and review summaries with delivery lifecycle
+      metrics. Delivery metrics are NULL until the corresponding milestone has occurred.
+    columns:
+      - name: order_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+      - name: purchase_date
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_day
+      - name: is_delivered
+        description: True when status is `delivered` and a delivery timestamp exists.
+        data_tests: [not_null]
+      - name: delivery_days
+        description: Days from purchase to customer delivery.
+      - name: delivery_delay_days
+        description: Calendar days past the estimated delivery date (negative = early).
+      - name: is_late
+        description: True when delivered after the estimated delivery date. NULL if not delivered.
+      - name: is_severely_late
+        description: True when late by more than the `severe_delay_threshold_days` variable.
+
+  - name: fct_order_items
+    description: One row per order item with price, freight and seller-to-customer distance.
+    columns:
+      - name: order_item_key
+        description: Primary key (`order_id` + `order_item_number`).
+        data_tests: [unique, not_null]
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_orders')
+                field: order_id
+      - name: product_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_products')
+                field: product_id
+      - name: seller_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_sellers')
+                field: seller_id
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+
