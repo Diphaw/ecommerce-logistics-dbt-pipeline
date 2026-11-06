@@ -19,6 +19,7 @@ data/raw/*.zip
 dbt_olist_logistics/target/
 dbt_olist_logistics/dbt_packages/
 dbt_olist_logistics/logs/
+dbt_olist_logistics/.user.yml
 logs/
 
 # OS & IDE
