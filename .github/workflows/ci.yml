@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check .
+
+  dbt-parse:
+    runs-on: ubuntu-latest
+    env:
+      DB_USER: ci
+      DB_PASSWORD: ci
+      DB_HOST: localhost
+      DB_PORT: "5432"
+      DB_NAME: ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Validate project compiles (no database required)
+        run: dbt parse --project-dir dbt_olist_logistics --profiles-dir dbt_olist_logistics
+
