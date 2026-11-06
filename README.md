@@ -119,7 +119,7 @@ Metrics are `NULL` until the corresponding milestone occurs; rates only count or
 
 ### Prerequisites
 
-- Python 3.10+ (with the `venv` module)
+- Python 3.10+ (with the `venv` module, e.g. `python3-venv` on Debian/Ubuntu)
 - Docker and Docker Compose
 - The Olist CSV files from [Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce), placed in `data/raw/`
 
@@ -140,7 +140,8 @@ make dbt-docs            # browse lineage and column documentation
 
 | Target | Description |
 |---|---|
-| `make setup` | Create the virtualenv and install dependencies |
+| `make setup` | Create standalone virtualenv (`--copies`) and install dependencies |
+| `make clean-venv` | Remove existing virtualenv directory |
 | `make up` / `make down` | Start / stop PostgreSQL (the data volume is kept) |
 | `make ingest` | Load raw CSVs into the `raw` schema |
 | `make dbt-build` | Build models and run tests in DAG order |
@@ -192,6 +193,7 @@ Known characteristics of the source data and how they are handled:
 ## Design Decisions
 
 - **ELT over ETL.** Raw data lands untouched and all transformation lives in version-controlled, tested SQL.
+- **Environment isolation (`--copies`).** Virtualenv is bootstrapped using `python3 -m venv --copies` to keep Python binaries self-contained within the project workspace, avoiding broken symlinks across container boundaries, sandbox mount paths, or OS upgrades.
 - **All-`TEXT` raw layer.** Typing is deferred to staging so malformed values never break ingestion and upstream quirks remain inspectable.
 - **`TRUNCATE` + `COPY` in one transaction.** Fast bulk loading, atomic per table, and dbt views that depend on raw tables are never dropped.
 - **Views for staging/intermediate, tables for marts.** No storage overhead for lightweight layers; fast reads for consumers.

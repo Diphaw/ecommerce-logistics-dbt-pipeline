@@ -13,15 +13,18 @@ DBT := $(BIN)/dbt
 DBT_FLAGS := --project-dir $(DBT_DIR) --profiles-dir $(DBT_DIR)
 
 .DEFAULT_GOAL := help
-.PHONY: help setup up down ingest dbt-debug dbt-run dbt-test dbt-build dbt-docs pipeline lint format
+.PHONY: help setup clean-venv up down ingest dbt-debug dbt-run dbt-test dbt-build dbt-docs pipeline lint format
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "} {printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
 
-setup: ## Create the virtualenv and install dependencies
-	python3 -m venv $(VENV)
+setup: ## Create standalone virtualenv (--copies) and install dependencies
+	python3 -m venv --copies $(VENV)
 	$(BIN)/pip install --upgrade pip
 	$(BIN)/pip install -r requirements-dev.txt
+
+clean-venv: ## Remove existing virtualenv
+	rm -rf $(VENV)
 
 up: ## Start PostgreSQL
 	docker compose up -d
