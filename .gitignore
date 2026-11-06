@@ -1,0 +1,27 @@
+# Virtual Environment
+venv/
+.venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+
+# Environment Variables
+.env
+*.env
+!.env.example
+
+# Raw Data (Hanya simpan struktur foldernya menggunakan .gitkeep)
+data/raw/*.csv
+data/raw/*.zip
+
+# dbt Artifacts
+dbt_olist_logistics/target/
+dbt_olist_logistics/dbt_packages/
+dbt_olist_logistics/logs/
+logs/
+
+# OS & IDE
+.vscode/
+.idea/
+.DS_Store
