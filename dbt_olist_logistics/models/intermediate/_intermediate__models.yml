@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: int_geolocation__zip_centroids
+    description: One centroid (mean lat/lng) per zip-code prefix.
+    columns:
+      - name: zip_code_prefix
+        data_tests: [unique, not_null]
+
+  - name: int_orders__payments_summary
+    description: One row per order aggregating all payments.
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: total_payment_value
+        data_tests: [not_null]
+
+  - name: int_orders__latest_review
+    description: One row per reviewed order, using the most recent review.
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: review_score
+        data_tests: [not_null]
+
+  - name: int_orders__items_summary
+    description: One row per order aggregating its items.
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+
+  - name: int_order_items__enriched
+    description: Order items with the seller-to-customer distance in km (NULL when a zip prefix has no geolocation).
+    columns:
+      - name: order_item_key
+        data_tests: [unique, not_null]
+
